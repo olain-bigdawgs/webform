@@ -1,0 +1,12 @@
+form.order-form fieldset {
+  display: none;
+}
+
+form.order-form textarea {
+  width: 100%;
+}
+
+#image_bg {
+  max-width: 700px;
+  max-height: 700px;
+}

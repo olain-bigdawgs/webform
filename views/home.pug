@@ -4,7 +4,7 @@ block content
   .row.justify-content-md-center
     .col.col-sm-6.col-sm-offset-3.form-box
       form.order-form(role='form', enctype='multipart/form-data', method='post')
-        //- fieldset
+        fieldset
           .form-top
             .form-top-left
               h3 Step 1
@@ -38,12 +38,12 @@ block content
             .form-group.row
               label.col-md-3.col-form-label.font-weight-bold.text-right(for='message') Inside Message
               .col-md-7
-                textarea#message(name='message' rows='5' placeholder='Message')
+                textarea#message(name='caption' rows='5' placeholder='Message')
             .form-group.row
               label.col-md-3.col-form-label.font-weight-bold.text-right(for='sign_off') Sign off
               .col-md-7
                 input#sign_off.form-control(type='text' name='sign_off' placeholder='Sign Off')
-            button.btn.btn-success.btn-next Submit
+            button.btn.btn-success.btn-next.btn-vid-card(type='submit') Submit
 
         fieldset
           .form-top
@@ -54,6 +54,7 @@ block content
               button.btn Add to Cart
 
   script.
+
     //- read uploaded image
     function readURL(input) {
       if (input.files && input.files[0]) {
