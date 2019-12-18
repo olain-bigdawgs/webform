@@ -1,0 +1,69 @@
+extends layout
+
+block content
+  .row.justify-content-md-center
+    .col.col-sm-6.col-sm-offset-3.form-box
+      form.order-form(role='form', enctype='multipart/form-data', method='post')
+        fieldset
+          .form-top
+            .form-top-left
+              h3 Step 1
+              p Upload Background Photo:
+              p Minimum File Size: 700px width by 700px height
+              p Valid File Types: JPG, PNG
+          .form-bottom
+            input(type='hidden' name='product_id' value='470')
+            .form-group.row
+              label.col-form-label.font-weight-bold(for='temp-bg') Template Background
+              .col-md-6
+                input#template_bg(type='file' name='template_bg' onchange='readURL(this);')
+            img#image_bg(src='http://placekitten.com/700/700' alt='Template Background')
+            button.btn.btn-success.btn-next.mt-3
+              i.fas.fa-arrow-right.fa-sm
+              | Next
+
+        fieldset
+          .form-top
+            .form-top-left
+              h3 Step 2
+              p Upload Video
+              p Video Length: Up to 2gb of video.
+              p Minimum Resolution: 480&times;272
+              p Supported File Formats: AVI, MP4, WMV, MOV
+          .form-bottom
+            .form-group.row
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='sound') Video
+              .col-md-7
+                input#sound(type='file' name='sound')
+            .form-group.row
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='message') Inside Message
+              .col-md-7
+                textarea#message(name='caption' rows='5' placeholder='Message')
+            .form-group.row
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='sign_off') Sign off
+              .col-md-7
+                input#sign_off.form-control(type='text' name='sign_off' placeholder='Sign Off')
+            button.btn.btn-success.btn-next.btn-greeting-card(type='submit') Submit
+
+        fieldset
+          .form-top
+            .form-top-left
+              h3 Preview
+          .form-bottom
+            .form-group.row
+              button.btn Add to Cart
+
+  script.
+
+    //- read uploaded image
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+        $('#image_bg')
+        .attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+

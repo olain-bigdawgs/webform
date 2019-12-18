@@ -123,17 +123,8 @@ app.use(
  * Primary app routes.
  */
 app.get("/", homeController.index);
-app.get("/login", userController.getLogin);
-app.post("/login", userController.postLogin);
-app.get("/logout", userController.logout);
-app.get("/forgot", userController.getForgot);
-app.post("/forgot", userController.postForgot);
-app.get("/reset/:token", userController.getReset);
-app.post("/reset/:token", userController.postReset);
-app.get("/signup", userController.getSignup);
-app.post("/signup", userController.postSignup);
-app.get("/contact", contactController.getContact);
-app.post("/contact", contactController.postContact);
+app.get("/video-greeting-card", homeController.videoGreetingCard);
+app.get("/greeting-card", homeController.greetingCard);
 
 /**
  * Error Handler.

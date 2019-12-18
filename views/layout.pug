@@ -107,6 +107,40 @@ html
         
       });
 
+      $(".btn-greeting-card").on("click", function(e) {
+        e.preventDefault();
+        let form = $('.order-form');
+        let imgAPIUrl = bigdawgsAPIurl + "/image";
+        let soundAPIUrl = bigdawgsAPIurl + "/sound";
+        let fData = $(this).serialize();
+
+        let formData = new FormData(form[0]);
+
+
+        postAjax(imgAPIUrl, formData)
+          .then(data => {
+            //- add to cart
+            console.log(data);
+
+            formData.delete("template_bg");
+            formData.set("greeting_card_id", data.greetingCardID);
+
+            postAjax(soundAPIUrl, formData)
+              .then(video => {
+                console.log(video);
+              })
+              .catch(err => {
+                console.log(err)
+              });
+          })
+          .catch(err => {
+            //- error message
+            console.log(err);
+          })
+
+        
+      });
+
       function getAjax(url) {
         return new Promise(function(resolve, reject) {
           let xhr = new XMLHttpRequest();
