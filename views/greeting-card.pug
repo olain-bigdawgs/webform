@@ -15,10 +15,11 @@ block content
             input(type='hidden' name='product_id' value='470')
             .form-group.row
               label.col-form-label.font-weight-bold(for='temp-bg') Template Background
-              .col-md-6
-                input#template_bg(type='file' name='template_bg' onchange='readURL(this);')
-            img#image_bg(src='http://placekitten.com/700/700' alt='Template Background')
-            button.btn.btn-success.btn-next.mt-3
+              a.add-bg-btn.ml-3.mb-3.btn-sm.btn.btn-primary(onclick="addNew()", href="#") Add Background
+            .row
+              #imagers
+
+            button.btn.btn-success.btn-next.mt-3.hidden
               i.fas.fa-arrow-right.fa-sm
               | Next
 
@@ -26,13 +27,12 @@ block content
           .form-top
             .form-top-left
               h3 Step 2
-              p Upload Video
-              p Video Length: Up to 2gb of video.
-              p Minimum Resolution: 480&times;272
-              p Supported File Formats: AVI, MP4, WMV, MOV
+              p Upload Sound
+              p Sound Length: Up to 120 seconds.
+              p Supported File Formats: MP3, WAV, M4A, AIIFF, WMA
           .form-bottom
             .form-group.row
-              label.col-md-3.col-form-label.font-weight-bold.text-right(for='sound') Video
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='sound') Sound
               .col-md-7
                 input#sound(type='file' name='sound')
             .form-group.row
@@ -48,7 +48,13 @@ block content
         fieldset
           .form-top
             .form-top-left
-              h3 Preview
+              h3 Uploaded Image
+              #uploaded-img.row
+                i.fa.fa-spinner.fa-pulse
+
+              h3.mt-5 Uploaded Audio
+              #uploaded-audio.row.mb-5
+                i.fa.fa-spinner.fa-pulse
           .form-bottom
             .form-group.row
               button.btn Add to Cart

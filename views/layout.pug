@@ -6,8 +6,9 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='theme-color' content='#4DA5F4')
     meta(name='csrf-token', content=_csrf)
-    title #{title} - Hackathon Starter
+    title #{title}
     link(rel='shortcut icon', href='/favicon.png')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='/css/style.css')
     block head
@@ -24,7 +25,150 @@ html
     script(src='/js/lib/jquery.min.js')
     script(src='/js/lib/popper.min.js')
     script(src='/js/lib/bootstrap.min.js')
+    script(src='/js/imagerJs.js')
     script(src='/js/main.js')
+
+    script.
+      var pluginsConfig = {
+        Rotate: {
+          controlsCss: {
+            width: '15px',
+            height: '15px',
+            background: 'white',
+            border: '1px solid black'
+          },
+          controlsTouchCss: {
+            width: '25px',
+            height: '25px',
+            background: 'white',
+            border: '2px solid black'
+          }
+        },
+        Resize: {
+          controlsCss: {
+            width: '15px',
+            height: '15px',
+            background: 'white',
+            border: '1px solid black'
+          },
+          controlsTouchCss: {
+            width: '25px',
+            height: '25px',
+            background: 'white',
+            border: '2px solid black'
+          }
+        },
+        Crop: {
+          controlsCss: {
+            width: '15px',
+            height: '15px',
+            background: 'white',
+            border: '1px solid black'
+          },
+          controlsTouchCss: {
+            width: '25px',
+            height: '25px',
+            background: 'white',
+            border: '2px solid black'
+          }
+        },
+        Save: {
+          upload: true,
+          uploadFunction: function(imageId, imageData, callback) {
+            var data = imageData.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+            var dataJson = '{ "imageId": "' + imageId + '", "imageData" : "' + data + '" }';
+            let imgAPIUrl = bigdawgsAPIurl + "/image";
+            let templateImg = $('.imager-test')[0];
+            let product_id =  $('.product_id').val();
+
+            let imgFormData = new FormData();
+
+            imgFormData.append('imageID', imageId)
+            imgFormData.append('imageB64', imageData)
+            imgFormData.append('product_id',product_id)
+
+            localStorage.setItem(imageId, imageData);
+            callback(localStorage.getItem(imageId));
+
+            postAjax(imgAPIUrl, imgFormData)
+              .then(image => {
+                console.log(image);
+
+                let imgBG = new Image();
+
+                imgBG.src = image.imageUrl.url;
+                $('#uploaded-img').append(imgBG);
+
+                localStorage.setItem('greetingCardID', image.greetingCardID);
+                $('.btn-next').removeClass('hidden');
+              })
+              .catch(err => {
+                //- error message
+                console.log(err);
+              })
+
+          }
+        },
+        Toolbar: {
+          toolbarSize: 85,
+          toolbarSizeTouch: 43,
+          tooltipEnabled: true,
+          tooltipCss: {
+            color: 'white',
+            background: 'black'
+          }
+        },
+        Delete: {
+          fullRemove: true
+        }
+      };
+
+      var options = {
+        plugins: ['Rotate', 'Crop', 'Resize', 'Save', 'Toolbar', 'Delete', 'Undo'],
+        editModeCss: {
+        },
+        pluginsConfig: pluginsConfig,
+        //- contentConfig: {
+        //-   saveImageData: function (imageId, imageData) {
+        //-     try {
+        //-       console.log('Save button clicked! ImageId:', imageId);
+        //-       console.log('ImageData argument here is the image encoded in base64 string. ' +
+        //-         'This function gets called anytime user clicks on `save` button. ' +
+        //-         'If one wants to disable edit after saving, check the `standalone-remote-upload.html` ' +
+        //-         'example file which shows how to upload image on the server ' +
+        //-         'and display it in place of ImagerJs after that.');
+        //-       localStorage.setItem(imageId, imageData);
+        //-     } catch (err) {
+        //-       console.error(err);
+        //-     }
+        //-   }
+        //- }
+      };
+
+      $('.add-bg-btn').click(function() {
+        $(this).addClass('hide');
+      });
+      
+      var addNew = function() {
+        var $imageContainer = $(
+          '<div class="image-container">' +
+          '  <img class="imager-test" ' +
+          '       src="" ' +
+          '       style="min-width: 300px; min-height: 200px; width: 300px;">' +
+          '</div>');
+
+        $('#imagers').append($imageContainer);
+        var imager = new ImagerJs.Imager($imageContainer.find('img'), options);
+        imager.startSelector();
+
+        imager.on('editStart', function () {
+          // fix image dimensions so that it could be properly placed on the grid
+          imager.$imageElement.css({
+            minWidth: 'auto',
+            minHeight: 'auto'
+          });
+        });
+      };
 
     script.
       let bigdawgsAPIurl = "#{process.env.API_URL}";
@@ -40,7 +184,7 @@ html
         e.preventDefault();
         let parent_fieldset = $(this).parents("fieldset");
         let next_step = true;
-        
+
         parent_fieldset
           .find('input[type="text"], input[type="password"], input[type="file"], textarea')
           .each(function() {
@@ -79,30 +223,47 @@ html
         let imgAPIUrl = bigdawgsAPIurl + "/image";
         let vidAPIUrl = bigdawgsAPIurl + "/video";
         let fData = $(this).serialize();
-
         let formData = new FormData(form[0]);
 
+        formData.set("greeting_card_id", localStorage.getItem('greetingCardID'));
 
-        postAjax(imgAPIUrl, formData)
-          .then(data => {
-            //- add to cart
-            console.log(data);
+        postAjax(vidAPIUrl, formData)
+          .then(video => {
+            console.log(video);
 
-            formData.delete("template_bg");
-            formData.set("greeting_card_id", data.greetingCardID);
+            let vidplayer = document.createElement('video');
+            let source = document.createElement('source');
+            let sourceWEBM = document.createElement('source');
+            let sourceOGV = document.createElement('source');
 
-            postAjax(vidAPIUrl, formData)
-              .then(video => {
-                console.log(video);
-              })
-              .catch(err => {
-                console.log(err)
-              });
+            vidplayer.preload = "none";
+            vidplayer.poster = video.videoUrl.url.split('.').slice(0, -1).join('.') + ".jpg";
+            vidplayer.controls = "controls";
+
+            //- original format
+            source.src = video.videoUrl.url;
+            source.type = "video/" + video.format + "; codecs=hvc1";
+
+
+            //- webm
+            sourceWEBM.src = video.videoUrl.url.split('.').slice(0, -1).join('.') + ".webm";
+            sourceWEBM.type ="video/webm; codecs=vp9";
+
+            //- ogg
+            sourceOGV.src = video.videoUrl.url.split('.').slice(0, -1).join('.') + ".ogv";
+            sourceOGV.type ="video/ogg";
+
+            vidplayer.append(source);
+            vidplayer.append(sourceWEBM);
+            vidplayer.append(sourceOGV);
+
+            $('#uploaded-video').append(vidplayer);
+
+            localStorage.clear();
           })
           .catch(err => {
-            //- error message
-            console.log(err);
-          })
+            console.log(err)
+          });
 
         
       });
@@ -110,36 +271,45 @@ html
       $(".btn-greeting-card").on("click", function(e) {
         e.preventDefault();
         let form = $('.order-form');
-        let imgAPIUrl = bigdawgsAPIurl + "/image";
         let soundAPIUrl = bigdawgsAPIurl + "/sound";
         let fData = $(this).serialize();
 
         let formData = new FormData(form[0]);
 
+        formData.set("greeting_card_id", localStorage.getItem('greetingCardID'));
 
-        postAjax(imgAPIUrl, formData)
-          .then(data => {
-            //- add to cart
-            console.log(data);
+        postAjax(soundAPIUrl, formData)
+          .then(sound => {
+            console.log(sound);
 
-            formData.delete("template_bg");
-            formData.set("greeting_card_id", data.greetingCardID);
+            let audioplayer = document.createElement('audio');
+            let source = document.createElement('source');
+            let sourceOGG = document.createElement('source');
 
-            postAjax(soundAPIUrl, formData)
-              .then(video => {
-                console.log(video);
-              })
-              .catch(err => {
-                console.log(err)
-              });
+            audioplayer.controls = "controls";
+
+            //- original format
+            source.src = sound.soundUrl.url;
+            source.format = "audio/" + sound.format;
+
+            //- ogg
+            sourceOGG.src = sound.soundUrl.url.split('.').slice(0, -1).join('.') + ".ogg";
+            sourceOGG.type ="audio/ogg";
+
+            audioplayer.append(source);
+            audioplayer.append(sourceOGG);
+
+            $('#uploaded-audio').append(audioplayer);
+
+            localStorage.clear();
           })
           .catch(err => {
-            //- error message
-            console.log(err);
-          })
-
+            console.log(err)
+          });
         
       });
+
+      //http://yourproducturl.com/checkout/?add-to-cart=%ID%
 
       function getAjax(url) {
         return new Promise(function(resolve, reject) {
@@ -162,23 +332,28 @@ html
 
 
       function postAjax(url, data) {
-       return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url);
-        xhr.onload = function() {
-          if (this.status === 201) {
-            let response = JSON.parse(xhr.response);
-            resolve(response);
-          } else {
+          let xhr = new XMLHttpRequest();
+          xhr.open("POST", url);
+          xhr.upload.addEventListener("progress", function(evt){
+            $("i.fa-spinner").removeClass("hidden");
+          }, false);
+
+          xhr.onload = function() {
+            if (this.status === 201) {
+              $("i.fa-spinner").addClass("hidden");
+              let response = JSON.parse(xhr.response);
+              resolve(response);
+            } else {
+              reject({ status: this.status, statusText: xhr.statusText });
+            }
+          };
+          xhr.onerror = function() {
             reject({ status: this.status, statusText: xhr.statusText });
-          }
-        };
-        xhr.onerror = function() {
-          reject({ status: this.status, statusText: xhr.statusText });
-        };
+          };
 
-        xhr.send(data);
-       });
+          xhr.send(data);
+        });
       }
       

@@ -9,16 +9,17 @@ block content
             .form-top-left
               h3 Step 1
               p Upload Background Photo:
-              p Minimum File Size: 700px width by 700px height
+              p Minimum File Resolution: 700px width by 700px height
               p Valid File Types: JPG, PNG
           .form-bottom
-            input(type='hidden' name='product_id' value='470')
+            input.product_id(type='hidden' name='product_id' value='470')
             .form-group.row
               label.col-form-label.font-weight-bold(for='temp-bg') Template Background
-              .col-md-6
-                input#template_bg(type='file' name='template_bg' onchange='readURL(this);')
-            img#image_bg(src='http://placekitten.com/700/700' alt='Template Background')
-            button.btn.btn-success.btn-next.mt-3
+              a.add-bg-btn.ml-3.mb-3.btn-sm.btn.btn-primary(onclick="addNew()", href="#") Add Background
+            .row
+              #imagers
+
+            button.btn.btn-success.btn-next.mt-3.hidden
               i.fas.fa-arrow-right.fa-sm
               | Next
 
@@ -48,22 +49,19 @@ block content
         fieldset
           .form-top
             .form-top-left
-              h3 Preview
+              h3 Uploaded Image
+              #uploaded-img.row
+                i.fa.fa-spinner.fa-pulse
+
+              h3.mt-5 Uploaded Video
+              #uploaded-video.row.mb-5
+                i.fa.fa-spinner.fa-pulse
+
           .form-bottom
             .form-group.row
-              button.btn Add to Cart
+              a.btn.btn-add-to-cart(href="https://client-bde.pixelpixelpixelpixel.com/checkout/?add-to-cart=470") Add to Cart
 
   script.
 
-    //- read uploaded image
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-        $('#image_bg')
-        .attr('src', e.target.result);
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
+    
+    

@@ -112,6 +112,12 @@ app.use(
   })
 );
 app.use(
+  "/js/lib",
+  express.static(path.join(__dirname, "node_modules/tui-code-snippet/dist"), {
+    maxAge: 31557600000
+  })
+);
+app.use(
   "/webfonts",
   express.static(
     path.join(__dirname, "node_modules/@fortawesome/fontawesome-free/webfonts"),
