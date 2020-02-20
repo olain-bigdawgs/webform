@@ -363,11 +363,6 @@ html
           //- }
 
           xhr.onload = function(e) {
-            if (e.lengthComputable) {
-              progressBar.max = e.total;
-              progressBar.value = e.loaded;
-              display.innerText = Math.floor((e.loaded / e.total) * 100) + '%';
-            }
             if (this.status === 201) {
               $("i.fa-spinner").addClass("hide");
 
