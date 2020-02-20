@@ -20,6 +20,20 @@ i.fa-spinner {
   font-size: 50px;
 }
 
+.progress {
+  background: #007bff;
+  display: block;
+  height: 20px;
+  text-align: center;
+  transition: width .3s;
+  width: 0;
+}
+
+.progress.hide {
+  opacity: 0;
+  transition: opacity 1.3s;
+}
+
 
 /*! ImagerJs */
 
