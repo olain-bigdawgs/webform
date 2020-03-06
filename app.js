@@ -76,7 +76,7 @@ app.use(
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(lusca.xframe("SAMEORIGIN"));
+app.use(lusca.xframe("allow-from *"));
 app.use(lusca.xssProtection(true));
 app.disable("x-powered-by");
 app.use((req, res, next) => {
