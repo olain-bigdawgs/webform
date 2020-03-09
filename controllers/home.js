@@ -8,14 +8,26 @@ exports.index = (req, res) => {
   });
 };
 
-exports.videoGreetingCard = (req, res) => {
-  res.render("video-greeting-card", {
-    title: "Video Greeting Card"
+exports.videoGreetingCardLite = (req, res) => {
+  res.render("video-greeting-card-lite", {
+    title: "Video Greeting Card Lite"
   });
 };
 
-exports.greetingCard = (req, res) => {
-  res.render("greeting-card", {
+exports.videoGreetingCardStandard = (req, res) => {
+  res.render("video-greeting-card-standard", {
+    title: "Video Greeting Card Standard"
+  });
+};
+
+exports.greetingCardSmall = (req, res) => {
+  res.render("greeting-card-small", {
+    title: "Greeting Card"
+  });
+};
+
+exports.greetingCardLarge = (req, res) => {
+  res.render("greeting-card-large", {
     title: "Greeting Card"
   });
 };

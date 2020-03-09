@@ -129,8 +129,13 @@ app.use(
  * Primary app routes.
  */
 app.get("/", homeController.index);
-app.get("/video-greeting-card", homeController.videoGreetingCard);
-app.get("/greeting-card", homeController.greetingCard);
+app.get("/video-greeting-card-lite", homeController.videoGreetingCardLite);
+app.get(
+  "/video-greeting-card-standard",
+  homeController.videoGreetingCardStandard
+);
+app.get("/greeting-card-small", homeController.greetingCardSmall);
+app.get("/greeting-card-large", homeController.greetingCardLarge);
 
 /**
  * Error Handler.
