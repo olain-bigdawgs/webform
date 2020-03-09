@@ -1,0 +1,61 @@
+extends layout
+
+block content
+  .row.justify-content-md-center
+    .col.col-sm-6.col-sm-offset-3.form-box
+      form.order-form(role='form', enctype='multipart/form-data', method='post')
+        fieldset
+          .form-top
+            .form-top-left
+              h3 Step 1
+              p Upload Background Photo:
+              p Minimum File Size: 700px width by 700px height
+              p Valid File Types: JPG, PNG
+          .form-bottom
+            input(type='hidden' name='product_id' value='470')
+            .form-group.row
+              label.col-form-label.font-weight-bold(for='temp-bg') Template Background
+              a.add-bg-btn.ml-3.mb-3.btn-sm.btn.btn-primary(onclick="addNew()", href="#") Add Background
+            .row
+              #imagers
+
+            button.btn.btn-success.btn-next.mt-3.hidden
+              i.fas.fa-arrow-right.fa-sm
+              | Next
+
+        fieldset
+          .form-top
+            .form-top-left
+              h3 Step 2
+              p Upload Sound
+              p Sound Length: Up to 120 seconds.
+              p Supported File Formats: MP3, WAV, M4A, AIIFF, WMA
+          .form-bottom
+            .form-group.row
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='sound') Sound
+              .col-md-7
+                input#sound(type='file' name='sound')
+            .form-group.row
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='message') Inside Message
+              .col-md-7
+                textarea#message(name='caption' rows='5' placeholder='Message')
+            .form-group.row
+              label.col-md-3.col-form-label.font-weight-bold.text-right(for='sign_off') Sign off
+              .col-md-7
+                input#sign_off.form-control(type='text' name='sign_off' placeholder='Sign Off')
+            button.btn.btn-success.btn-next.btn-greeting-card(type='submit') Submit
+
+        fieldset
+          .form-top
+            .form-top-left
+              h3 Uploaded Image
+              #uploaded-img.row
+                i.fa.fa-spinner.fa-pulse
+
+              h3.mt-5 Uploaded Audio
+              #uploaded-audio.row.mb-5
+                i.fa.fa-spinner.fa-pulse
+          .form-bottom
+            .form-group.row
+              a.btn.btn-add-to-cart(href="https://client-bde.pixelpixelpixelpixel.com/checkout/?add-to-cart=2696") Add to Cart
+

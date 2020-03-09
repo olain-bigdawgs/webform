@@ -59,17 +59,3 @@ block content
             .form-group.row
               a.btn.btn-add-to-cart(href="https://client-bde.pixelpixelpixelpixel.com/checkout/?add-to-cart=1125") Add to Cart
 
-  script.
-
-    //- read uploaded image
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-        $('#image_bg')
-        .attr('src', e.target.result);
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
