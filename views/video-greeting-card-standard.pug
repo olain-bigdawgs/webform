@@ -12,12 +12,19 @@ block content
               p Minimum File Resolution: 700px width by 700px height
               p Valid File Types: JPG, PNG
           .form-bottom
-            input.product_id(type='hidden' name='product_id' value='470')
             .form-group.row
-              label.col-form-label.font-weight-bold(for='temp-bg') Template Background
-              a.add-bg-btn.ml-3.mb-3.btn-sm.btn.btn-primary(onclick="addNew()", href="#") Add Background
-            .row
-              #imagers
+              input.product_id(type='hidden' name='product_id' value='470')
+              label.col-md-3.col-form-label.font-weight-bold(for='temp-bg') Template Background
+              .col-md-7
+                input#temp_bg(type='file')
+            .form-group.row
+              .crop-area-wrap
+                .crop-area
+            .form-group.row
+              .col.mt-5.text-center
+                button.btn.crop-btn.hide
+                  i.fas.fa-cut
+                  | Crop
 
             button.btn.btn-success.btn-next.mt-3.hidden
               i.fas.fa-arrow-right.fa-sm

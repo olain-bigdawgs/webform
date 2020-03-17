@@ -2,7 +2,7 @@ extends layout
 
 block content
   .row.justify-content-md-center
-    .col.col-sm-6.col-sm-offset-3.form-box
+    .col-12.form-box
       form.order-form(role='form', enctype='multipart/form-data', method='post')
         fieldset
           .form-top
@@ -12,12 +12,23 @@ block content
               p Minimum File Resolution: 700px width by 700px height
               p Valid File Types: JPG, PNG
           .form-bottom
-            input.product_id(type='hidden' name='product_id' value='36')
             .form-group.row
-              label.col-form-label.font-weight-bold(for='temp-bg') Template Background
-              a.add-bg-btn.ml-3.mb-3.btn-sm.btn.btn-primary(onclick="addNew()", href="#") Add Background
-            .row
-              #imagers
+              input.product_id(type='hidden' name='product_id' value='36')
+              label.col-md-3.col-form-label.font-weight-bold(for='temp-bg') Template Background
+              .col-md-7
+                input#temp_bg(type='file')
+            .form-group.row
+              .crop-area-wrap
+                .crop-area
+            .form-group.row
+              .col.mt-5.text-center
+                button.btn.crop-btn.hidden
+                  i.fas.fa-cut
+                  | Crop
+            .form-group.row
+              .progress
+              //- progress#progress(value='0')
+              //- span#display
 
             button.btn.btn-success.btn-next.mt-3.hidden
               i.fas.fa-arrow-right.fa-sm
@@ -44,7 +55,7 @@ block content
               label.col-md-3.col-form-label.font-weight-bold.text-right(for='sign_off') Sign off
               .col-md-7
                 input#sign_off.form-control(type='text' name='sign_off' placeholder='Sign Off')
-            button.btn.btn-success.btn-next.btn-vid-card(type='submit') Submit
+            button.btn.btn-success.btn-vid-card(type='submit') Submit
 
         fieldset
           .form-top
