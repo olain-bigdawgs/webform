@@ -243,68 +243,95 @@ script.
   function postAjax(url, data) {
     return new Promise((resolve, reject) => {
 
-      $.ajax({
-        xhr: function() {
-          var xhr = new window.XMLHttpRequest();
+      //- $.ajax({
+      //-   xhr: function() {
+      //-     var xhr = new window.XMLHttpRequest();
 
-          //Upload progress
-          xhr.upload.addEventListener("progress", function(evt){
-            if (evt.lengthComputable) {
-              var percentComplete = evt.loaded / evt.total;
-              //Do something with upload progress
-              console.log(percentComplete);
-              $('.progress').css({
-                width: percentComplete * 100 + '%'
-              });
-              if (percentComplete === 1) {
-                  $('.progress').addClass('hide');
-              }
-            }
-          }, false);
-          //Download progress
-          xhr.addEventListener("progress", function(evt){
-            if (evt.lengthComputable) {
-              var percentComplete = evt.loaded / evt.total;
-              //Do something with download progress
-              console.log(percentComplete);
-              $('.progress').css({
-                width: percentComplete * 100 + '%'
-              });
-            }
-          }, false);
-          return xhr;
-        },
-        type: 'POST',
-        url: url,
-        data: data,
-        processData: false,
-        contentType: false,
-        success: function(res) {
-          resolve(res);
-        },
-        error: function(err) {
-          reject({ status: this.status, statusText: err.statusText })
-        }
-      })
-
-      //- let xhr = new XMLHttpRequest();
-
-      //- xhr.open("POST", url);
-
-      //- xhr.onload = function(e) {
-      //-   if (this.status === 201) {
-      //-     $("i.fa-spinner").addClass("hide");
-
-      //-     let response = JSON.parse(xhr.response);
-      //-     resolve(response);
-      //-   } else {
-      //-     reject({ status: this.status, statusText: xhr.statusText });
+      //-     //Upload progress
+      //-     xhr.upload.addEventListener("progress", function(evt){
+      //-       if (evt.lengthComputable) {
+      //-         var percentComplete = evt.loaded / evt.total;
+      //-         //Do something with upload progress
+      //-         console.log(percentComplete);
+      //-         $('.progress').css({
+      //-           width: percentComplete * 100 + '%'
+      //-         });
+      //-         if (percentComplete === 1) {
+      //-             $('.progress').addClass('hide');
+      //-         }
+      //-       }
+      //-     }, false);
+      //-     //Download progress
+      //-     xhr.addEventListener("progress", function(evt){
+      //-       if (evt.lengthComputable) {
+      //-         var percentComplete = evt.loaded / evt.total;
+      //-         //Do something with download progress
+      //-         console.log(percentComplete);
+      //-         $('.progress').css({
+      //-           width: percentComplete * 100 + '%'
+      //-         });
+      //-       }
+      //-     }, false);
+      //-     return xhr;
+      //-   },
+      //-   type: 'POST',
+      //-   url: url,
+      //-   data: data,
+      //-   processData: false,
+      //-   contentType: false,
+      //-   success: function(res) {
+      //-     resolve(res);
+      //-   },
+      //-   error: function(err) {
+      //-     reject({ status: this.status, statusText: err.statusText })
       //-   }
-      //- };
-      //- xhr.onerror = function() {
-      //-   reject({ status: this.status, statusText: xhr.statusText });
-      //- };
+      //- })
 
-      //- xhr.send(data);
+      let xhr = new XMLHttpRequest();
+
+      xhr.open("POST", url);
+
+      xhr.onload = function(e) {
+        if (this.status === 201) {
+          $("i.fa-spinner").addClass("hide");
+
+          let response = JSON.parse(xhr.response);
+          resolve(response);
+        } else {
+          reject({ status: this.status, statusText: xhr.statusText });
+        }
+      };
+      
+      xhr.upload.addEventListener("progress", function(evt){
+        if (evt.lengthComputable) {
+          var percentComplete = evt.loaded / evt.total;
+          //Do something with upload progress
+          console.log(percentComplete);
+          $('.progress').css({
+            width: percentComplete * 100 + '%'
+          });
+          if (percentComplete === 1) {
+              $('.progress').addClass('hide');
+          }
+        }
+      }, false);
+      
+      //Download progress
+      xhr.addEventListener("progress", function(evt){
+        if (evt.lengthComputable) {
+          var percentComplete = evt.loaded / evt.total;
+          //Do something with download progress
+          console.log(percentComplete);
+          $('.progress').css({
+            width: percentComplete * 100 + '%'
+          });
+        }
+      }, false);
+
+      xhr.onerror = function() {
+        reject({ status: this.status, statusText: xhr.statusText });
+      };
+
+      xhr.send(data);
     });
   }
