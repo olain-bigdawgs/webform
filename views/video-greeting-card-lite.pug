@@ -14,6 +14,7 @@ block content
           .form-bottom
             .form-group.row
               input.product_id(type='hidden' name='product_id' value='36')
+              input.gc_description(type='hidden' name='gc_description' value='Video Book Lite')
               label.col-md-3.col-form-label.font-weight-bold(for='temp-bg') Template Background
               .col-md-7
                 input#temp_bg(type='file')
@@ -27,8 +28,6 @@ block content
                   | Crop
             .form-group.row
               .progress
-              //- progress#progress(value='0')
-              //- span#display
 
             button.btn.btn-success.btn-next.mt-3.hidden
               i.fas.fa-arrow-right.fa-sm
@@ -55,7 +54,12 @@ block content
               label.col-md-3.col-form-label.font-weight-bold.text-right(for='sign_off') Sign off
               .col-md-7
                 input#sign_off.form-control(type='text' name='sign_off' placeholder='Sign Off')
-            button.btn.btn-success.btn-vid-card(type='submit') Submit
+            .form-group.row
+              .progress-vid
+            .form-group.row
+              button.btn.btn-success.btn-vid-card(type='submit') Submit
+            .form-group.row
+              a.btn.btn-add-to-cart.hidden(href="https://client-bde.pixelpixelpixelpixel.com/checkout/?add-to-cart=36") Add to Cart
 
         fieldset
           .form-top

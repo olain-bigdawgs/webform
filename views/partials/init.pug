@@ -11,6 +11,7 @@ script.
     if (input.files && input.files[0]) {
       let reader = new FileReader();
       let product_id =  $('.product_id').val();
+      let gc_description =  $('.gc_description').val();
       let imgAPIUrl = bigdawgsAPIurl + "/image";
 
       reader.onload = function(e) {
@@ -19,7 +20,6 @@ script.
         $uploadCrop.croppie('bind', {
           url: e.target.result
         }).then(function() {
-          console.log('binded');
         })
         $("#temp_bg").hide();
         $('.crop-btn').removeClass('hidden');
@@ -40,12 +40,14 @@ script.
             imgFormData.append('imageID', input.files[0].name)
             imgFormData.append('imageB64', dataImg);
             imgFormData.append('product_id',product_id);
+            imgFormData.append('gc_description',gc_description);
             
             postAjax(imgAPIUrl, imgFormData)
-              .then((image, err, prog) => {
-                console.log(prog);
+              .then(image => {
+                console.log(image)
                 localStorage.setItem('greetingCardID', image.greetingCardID);
-                $('.btn-next').removeClass('hidden');
+                localStorage.setItem('product_id', product_id);
+                $('.btn-next').click();
               })
               .catch(err => {
                 //- error message
@@ -134,11 +136,16 @@ script.
     let fData = $(this).serialize();
     let formData = new FormData(form[0]);
 
+    $(".btn-vid-card").attr('disabled', true);
+
     formData.set("greeting_card_id", localStorage.getItem('greetingCardID'));
 
     postAjax(vidAPIUrl, formData)
       .then(video => {
         console.log(video);
+
+        $(".btn-vid-card").addClass('hidden');
+        $(".btn-add-to-cart").removeClass('hidden');
 
         let vidplayer = document.createElement('video');
         let source = document.createElement('source');
@@ -166,9 +173,8 @@ script.
         vidplayer.append(sourceWEBM);
         vidplayer.append(sourceOGV);
         
-        setTimeout($('#uploaded-video').append(vidplayer), 5000);
+        $('#uploaded-video').append(vidplayer), 5000;
 
-        localStorage.clear();
       })
       .catch(err => {
         console.log(err)
@@ -209,11 +215,38 @@ script.
         audioplayer.append(sourceOGG);
 
         $('#uploaded-audio').append(audioplayer);
-
-        localStorage.clear();
       })
       .catch(err => {
         console.log(err)
+      });
+    
+  });
+
+  $('.btn-add-to-cart').on("click", function(e) {
+    e.preventDefault();
+
+    let gcFormData = new FormData();
+    let greetingCardUrl = bigdawgsAPIurl + "/send";
+    let product_id = localStorage.getItem('product_id');
+    
+    gcFormData.append('greeting_card_id', localStorage.getItem('greetingCardID'));
+
+    console.log(localStorage.getItem('greetingCardID'));
+    console.log(localStorage.getItem('product_id'));
+    
+    for (var value of gcFormData.values()) {
+      console.log(value); 
+    }
+    
+    postAjax(greetingCardUrl, gcFormData)
+      .then(result => {
+        console.log(result);
+        console.log('sent');
+        localStorage.clear();
+        location.href="https://client-bde.pixelpixelpixelpixel.com/checkout/?add-to-cart="+ product_id;
+      })
+      .catch(err => {
+        console.log(err);
       });
     
   });
@@ -242,59 +275,12 @@ script.
 
   function postAjax(url, data) {
     return new Promise((resolve, reject) => {
-
-      //- $.ajax({
-      //-   xhr: function() {
-      //-     var xhr = new window.XMLHttpRequest();
-
-      //-     //Upload progress
-      //-     xhr.upload.addEventListener("progress", function(evt){
-      //-       if (evt.lengthComputable) {
-      //-         var percentComplete = evt.loaded / evt.total;
-      //-         //Do something with upload progress
-      //-         console.log(percentComplete);
-      //-         $('.progress').css({
-      //-           width: percentComplete * 100 + '%'
-      //-         });
-      //-         if (percentComplete === 1) {
-      //-             $('.progress').addClass('hide');
-      //-         }
-      //-       }
-      //-     }, false);
-      //-     //Download progress
-      //-     xhr.addEventListener("progress", function(evt){
-      //-       if (evt.lengthComputable) {
-      //-         var percentComplete = evt.loaded / evt.total;
-      //-         //Do something with download progress
-      //-         console.log(percentComplete);
-      //-         $('.progress').css({
-      //-           width: percentComplete * 100 + '%'
-      //-         });
-      //-       }
-      //-     }, false);
-      //-     return xhr;
-      //-   },
-      //-   type: 'POST',
-      //-   url: url,
-      //-   data: data,
-      //-   processData: false,
-      //-   contentType: false,
-      //-   success: function(res) {
-      //-     resolve(res);
-      //-   },
-      //-   error: function(err) {
-      //-     reject({ status: this.status, statusText: err.statusText })
-      //-   }
-      //- })
-
       let xhr = new XMLHttpRequest();
 
       xhr.open("POST", url);
 
       xhr.onload = function(e) {
         if (this.status === 201) {
-          $("i.fa-spinner").addClass("hide");
-
           let response = JSON.parse(xhr.response);
           resolve(response);
         } else {
@@ -307,22 +293,22 @@ script.
           var percentComplete = evt.loaded / evt.total;
           //Do something with upload progress
           console.log(percentComplete);
-          $('.progress').css({
+          $('.progress, .progress-vid').css({
             width: percentComplete * 100 + '%'
           });
           if (percentComplete === 1) {
-              $('.progress').addClass('hide');
+            $('.progress, .progress-vid').addClass('hide');
           }
         }
       }, false);
-      
+
       //Download progress
       xhr.addEventListener("progress", function(evt){
         if (evt.lengthComputable) {
           var percentComplete = evt.loaded / evt.total;
           //Do something with download progress
           console.log(percentComplete);
-          $('.progress').css({
+          $('.progress, .progress-vid').css({
             width: percentComplete * 100 + '%'
           });
         }
