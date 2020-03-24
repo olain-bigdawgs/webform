@@ -48,7 +48,10 @@ script.
                 //- console.log(image)
                 localStorage.setItem('greetingCardID', image.greetingCardID);
                 localStorage.setItem('product_id', product_id);
-                $('.btn-next').click();
+                let uploadedImg = document.createElement('img');
+                uploadedImg.setAttribute('src', dataImg);
+                $('#uploaded-img').append(uploadedImg);
+                $('.btn-next').removeClass('hidden');
               })
               .catch(err => {
                 //- error message
@@ -111,10 +114,6 @@ script.
           .fadeIn();
       });
     }
-    $("#progress").value = 0;
-    $("#display").innerText = '0%';
-    $("#progress").removeClass("hide");
-    $("#display").removeClass("hide");
   });
 
   // previous step
@@ -174,7 +173,8 @@ script.
         vidplayer.append(sourceWEBM);
         vidplayer.append(sourceOGV);
         
-        $('#uploaded-video').append(vidplayer), 5000;
+        $('#uploaded-video i.fa.fa-spinner.fa-pulse').addClass('hidden');
+        $('#uploaded-video').append(vidplayer);
 
       })
       .catch(err => {
@@ -214,7 +214,8 @@ script.
 
         audioplayer.append(source);
         audioplayer.append(sourceOGG);
-
+        
+        $('#uploaded-audio i.fa.fa-spinner.fa-pulse').addClass('hidden');
         $('#uploaded-audio').append(audioplayer);
       })
       .catch(err => {
@@ -285,11 +286,11 @@ script.
           var percentComplete = evt.loaded / evt.total;
           //Do something with upload progress
           //- console.log(percentComplete);
-          $('.progress, .progress-vid').css({
+          $('.progress, .progress-vid', '.progress-vid-lite').css({
             width: percentComplete * 100 + '%'
           });
           if (percentComplete === 1) {
-            $('.progress, .progress-vid').addClass('hide');
+            $('.progress, .progress-vid', '.progress-vid-lite').addClass('hide');
           }
         }
       }, false);
@@ -300,7 +301,7 @@ script.
           var percentComplete = evt.loaded / evt.total;
           //Do something with download progress
           console.log(percentComplete);
-          $('.progress, .progress-vid').css({
+          $('.progress, .progress-vid', '.progress-vid-lite').css({
             width: percentComplete * 100 + '%'
           });
         }

@@ -20,7 +20,7 @@ i.fa-spinner {
   font-size: 50px;
 }
 
-.progress, .progress-vid {
+.progress, .progress-vid, .progress-vid-lite {
   background: #007bff;
   display: block;
   height: 20px;
@@ -29,7 +29,7 @@ i.fa-spinner {
   width: 0;
 }
 
-.progress.hide, .progress-vid.hide {
+.progress.hide, .progress-vid.hide, .progress-vid-lite.hide {
   opacity: 0;
   transition: opacity 1.3s;
 }

@@ -2,7 +2,7 @@ extends layout
 
 block content
   .row.justify-content-md-center
-    .col.col-sm-6.col-sm-offset-3.form-box
+    .col-12.form-box
       form.order-form(role='form', enctype='multipart/form-data', method='post')
         fieldset
           .form-top
@@ -23,7 +23,7 @@ block content
                 .crop-area
             .form-group.row
               .col.mt-5.text-center
-                button.btn.crop-btn.hide
+                button.btn.crop-btn.hidden
                   i.fas.fa-cut
                   | Crop
             .form-group.row
@@ -53,6 +53,8 @@ block content
             .form-group.row
               label.col-md-3.col-form-label.font-weight-bold.text-right(for='sign_off') Sign off
               .col-md-7
+            .form-group.row
+              .progress-vid
                 input#sign_off.form-control(type='text' name='sign_off' placeholder='Sign Off')
             button.btn.btn-success.btn-next.btn-vid-card(type='submit') Submit
 
@@ -65,8 +67,7 @@ block content
               h3.mt-5 Uploaded Video
               #uploaded-video.row.mb-5
                 i.fa.fa-spinner.fa-pulse
-                //- progress#progress(value='0')
-                //- span#display
+                .progress-vid-lite
 
           .form-bottom
             .form-group.row
